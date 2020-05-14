@@ -78,6 +78,11 @@ function randomMove(areaTd, tableTd){
 } 
 function gamePlayerWin(areaTd){
     let tableTd = document.querySelectorAll('.table td');
+    if(stop(areaTd)){
+        let text = 'победила дружба';
+        openModal(modal,btn,textModal,text);
+        return;
+    }else{ 
     if((areaTd[0].stat=='O'&& areaTd[1].stat=='O'||
         areaTd[6].stat=='O'&& areaTd[4].stat=='O'||
         areaTd[5].stat=='O' && areaTd[8].stat=='O') && areaTd[2].stat==null){
@@ -119,10 +124,12 @@ function gamePlayerWin(areaTd){
        gamePlayer(areaTd) 
     }
     winGamer(areaTd);
+  }
 }
 function gamePlayer(areaTd){ 
     
     let tableTd = document.querySelectorAll('.table td');
+     
             if((areaTd[0].stat=='X'&& areaTd[1].stat=='X'||
                areaTd[6].stat=='X'&& areaTd[4].stat=='X'||
                areaTd[5].stat=='X' && areaTd[8].stat=='X') && areaTd[2].stat==null){
@@ -144,7 +151,7 @@ function gamePlayer(areaTd){
                       areaTd[4].stat=='X' && areaTd[8].stat=='X') && areaTd[0].stat==null){
                     areaTd[0].stat = 'O'; 
                     tableTd[0].innerHTML = 'O';
-            } else if((areaTd[0].stat=='X'&& areaTd[2].stat=='X'||
+            }else if((areaTd[0].stat=='X'&& areaTd[2].stat=='X'||
                       areaTd[4].stat=='X'&& areaTd[7].stat=='X') && areaTd[1].stat==null){
                     areaTd[1].stat = 'O'; 
                     tableTd[1].innerHTML = 'O';
@@ -181,7 +188,7 @@ function winGamer(areaTd){
           ){
             let text = 'Поздравляю вы спасли мир'
             openModal(modal,btn,textModal,text);
-    
+            return true;
         }else if(areaTd[0].stat=='O'&& areaTd[1].stat=='O' && areaTd[2].stat=='O'||
                  areaTd[0].stat=='O'&& areaTd[4].stat=='O' && areaTd[8].stat=='O'||
                  areaTd[0].stat=='O'&& areaTd[3].stat=='O' && areaTd[6].stat=='O'||
@@ -192,10 +199,8 @@ function winGamer(areaTd){
                  areaTd[2].stat=='O'&& areaTd[5].stat=='O' && areaTd[8].stat=='O'){
                let text = 'Упс!!! Кажется восстание машин уже началось ';
                let audio = true;
-                openModal(modal,btn,textModal,text,audio );
-                
-        }else{
-           stop(areaTd);      
+                openModal(modal,btn,textModal,text,audio );  
+                return true;
         }
 }
 function stop(areaTd){
@@ -219,13 +224,10 @@ function init(areaTd ){
             let tdCoord = e.target.getAttribute('data-coord');
             
             go(td, areaTd, tdCoord);
-            
-            if(stop(areaTd)){
-                let text = 'победила дружба';
-                openModal(modal,btn,textModal,text)
-            }else{
+            if(!winGamer(areaTd)){
                 gamePlayerWin(areaTd)
-            }  
+            }
+            
         }
     });
 };
